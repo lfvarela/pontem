@@ -5,8 +5,11 @@ import bs4
 from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
 
+from utils import *
+
 class Processor():
     def __init__(self, url):
+        self.url = url
         self.article = Article(url, MAX_KEYWORDS=5) #limited to 5 keywords to maximize search flexibility
         self.authors, self.keywords = self._process_article()
 
@@ -46,11 +49,14 @@ class Processor():
 
         # appends the title and url of top articles to related_articles
         for i, article in enumerate(article_list):
-            if i >= 10:
-                break  
+            if(is_same_url(self.url,article.link.text)): #if the article is the same, it should not be in the related list
+                continue
+            if len(related_articles) == 10:
+                break
             related_articles.append((article.title.text, article.link.text))
 
         assert(len(related_articles) <= 10)
+        print(related_articles)
         return related_articles
 
 
