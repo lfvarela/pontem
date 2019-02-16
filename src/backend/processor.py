@@ -14,6 +14,15 @@ class Processor():
         keywords = self.article.keywords
         return authors, keywords
 
+    def _fetch_related_articles(self):
+        """
+        Use the keywords and any other info from the article to return related
+        :return: list<str>, list of related urls
+        """
+        keywords = self.keywords
+        #TODO: implement (Miguel)
+        return []
+
 
     def get_most_similar(self):
         return {'authors': self.authors, 'keywords': self.keywords }
