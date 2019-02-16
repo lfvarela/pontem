@@ -4,31 +4,40 @@
 
 'use strict';
 
-// chrome.runtime.onInstalled.addListener(function() {
-//   chrome.storage.sync.set({color: '#3aa757'}, function() {
-//     console.log('The color is green.');
-//   });
-//   // chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-//   //   chrome.declarativeContent.onPageChanged.addRules([{
-//   //     conditions: [new chrome.declarativeContent.PageStateMatcher({
-//   //       pageUrl: {hostEquals: 'developer.chrome.com'},
-//   //     })],
-//   //     actions: [new chrome.declarativeContent.ShowPageAction()]
-//   //   }]);
-//   // });
-
 chrome.runtime.onInstalled.addListener(function() {
-  chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    console.log("ready");
-    console.log(sender.tab.url);
 
-    var requestUrl = "http://18.144.34.151/ale"
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', requestUrl, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onload = function(){
-      console.log('getFinalUrl', xhr.responseURL);
-    };
-    xhr.send(JSON.stringify({putanginamo: sender.tab.url}));
+  chrome.storage.local.set({"current_url": null}, function() {
+    console.log("initializing urlset");
+  });
+
+  chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+
+    chrome.storage.local.get(["current_url"], function(result) {
+
+      if(result.current_url == sender.tab.url) {
+        console.log("redundant");
+        return;
+      } else {
+        // console.log("ready");
+        // console.log(sender.tab.url);
+
+        chrome.storage.local.set({"current_url": sender.tab.url}, function() {
+          console.log("processing url");
+
+          var requestUrl = "http://52.52.89.74/url"
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', requestUrl, true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.onload = function(){
+            console.log('getFinalUrl', xhr.responseURL);
+          };
+          xhr.send(JSON.stringify({url: sender.tab.url}));
+        });
+      }
+    });
+    
+    
+    
+  
   });
 });
