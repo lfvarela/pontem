@@ -1,6 +1,7 @@
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from newspaper import Article
+from .processor import Processor
 import json
 
 app = Flask(__name__)
@@ -19,8 +20,14 @@ def hello_world():
 @app.route('/url', methods=['POST'])
 def url():
     parsed = json.loads(request.data)
-    print(json.dumps(parsed, indent=4, sort_keys=True))
-    return 'Success.\n'
+    url = parsed['url']
+    processor = Processor(url)
+    result = processor.get_most_similar()
+    return jsonify(result)
+
+
+def pprint(d):
+    print(json.dumps(d, indent=4, sort_keys=True))
 
 
 if __name__ == "__main__":
