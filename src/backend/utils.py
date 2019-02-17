@@ -51,9 +51,9 @@ def find_ideal_recommendations(sentiment_tuples, our_sentiment):
     if our_sentiment < most_positive and our_sentiment > most_negative:
         return [sentiment_tuples[0], sentiment_tuples[-1]]
     elif our_sentiment <= most_negative:
-        return [sentiment_tuples[-1], sentiment_tuples[len(sentiment_tuples/2)]]
+        return [sentiment_tuples[-1], sentiment_tuples[len(sentiment_tuples)/2]]
     elif our_sentiment >= most_positive:
-        return [sentiment_tuples[0], sentiment_tuples[len(sentiment_tuples/2)]]
+        return [sentiment_tuples[0], sentiment_tuples[len(sentiment_tuples)/2]]
     else:
         return sentiment_tuples
 
