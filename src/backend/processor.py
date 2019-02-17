@@ -128,10 +128,9 @@ class Processor():
             {
                 'ok': True,
                 'title': self.article.title,
-                'authors': self.article.authors,
+                'authors':  self.article.authors if self.article.authors else [''],
                 'sentiment': our_sentiment,
                 'url': self.article.url,
                 'recommendations': recommendations
             }
-
 
