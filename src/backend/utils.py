@@ -14,6 +14,8 @@ def is_same_url(url1,url2):
 
     return True
 
+def get_keywords(title, text):
+
 # def get_entities(text):
 #     """
 #     This method uses the spacy named entity recognition module to extract named entities from the given text.
