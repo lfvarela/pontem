@@ -23,6 +23,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   console.log('RECIEVING MESSAGE');
   if(message.type === "redirect"){
     console.log('HANDLING MESSAGE');
-    location.replace("http://"+message.redirect)
+    location.replace(message.redirect)
   }
 });

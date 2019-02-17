@@ -39,8 +39,8 @@ function setupPage(article){
 
   var counter = 0
   let firstElement = document.createElement("div");
-  for (var i in article["related articles"]){
-    const page = article["related articles"][i];
+  for (var i in article["recommendations"]){
+    const page = article["recommendations"][i];
     console.log(page);
     var newElement = document.createElement("li");
     newElement.className = "relatedArticle"
@@ -49,21 +49,34 @@ function setupPage(article){
     relatedArticles.appendChild(newElement);
     console.log(newElement);
   }
-  for (var i in article["related articles"]){
-    const page = article["related articles"][i];
+  for (var i in article["recommendations"]){
+    const page = article["recommendations"][i];
+    console.log(page);
     let newElement = document.getElementById(i);
     newElement.addEventListener("click", (event) => {
-      console.log([event.srcElement.id])
-      chrome.runtime.sendMessage({
-        type: "redirect",
-        redirect: article["related articles"][event.srcElement.id].url,
+      const index = getElement(event)
+      console.log("THE INDEX IS");
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+        chrome.tabs.sendMessage(tabs[0].id, {
+          type: "redirect",
+          redirect: article["recommendations"][index].url,
+        });
       });
-      });
+    });
+  }
+}
+
+function getElement(event){
+  for (var i in event.path){
+    if (event.path[i].className === "articleContainer"){
+      return event.path[i].id;
     }
   }
+  return 0;
+}
 
 
-  function getArticleHTML(page, index){
-    console.log(index);
-    return '<div class="articleContainer" id='+index+'> <div class="titleContainer"><h2 class="articleTitle">'+ page.title + '</h2>' + '<h3>'+page.authors[0]+'</h3>'+'</div> <div class="score">' + page.value + '</div> </div>';
-  }
+function getArticleHTML(page, index){
+  console.log(index);
+  return '<div class="articleContainer" id='+index+'> <div class="titleContainer"><h2 class="articleTitle">'+ page.title + '</h2>' + '<h3>'+page.authors[0]+'</h3>'+'</div> <div class="score">' + Math.round(100*page.sentiment) + '</div> </div>';
+}

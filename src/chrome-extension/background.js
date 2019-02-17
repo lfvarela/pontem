@@ -20,11 +20,12 @@ chrome.runtime.onInstalled.addListener(function() {
 
           chrome.storage.local.set({"current_url": sender.tab.url}, function() {
 
-            var requestUrl = "http://52.52.89.74/url"
+            var requestUrl = "http://52.52.89.74:5000/url"
             var xhr = new XMLHttpRequest();
             xhr.open('POST', requestUrl, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onload = function(){
+              console.log('in the onload');
               console.log(this.response);
               sendResponse(this.response);
             };
@@ -32,8 +33,7 @@ chrome.runtime.onInstalled.addListener(function() {
           });
         }
       });
-      return true;
     }
-
+    return true;
   });
 });
