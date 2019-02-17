@@ -53,6 +53,8 @@ class Processor():
                 break
 
             original_datetime = self.article.publish_date # the date that original article is published
+            if not original_datetime:
+                original_datetime = datetime.today()
             obj_datetime = datetime.strptime(page_obj.pubDate.text, '%a, %d %b %Y %X %Z')
             expiry = timedelta(days=7)
 
