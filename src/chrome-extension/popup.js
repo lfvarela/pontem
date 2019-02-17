@@ -20,8 +20,8 @@ let relatedArticles = document.getElementById("relatedArticles");
 
 chrome.storage.local.get("article", (article) => {
   console.log('The article is');
-  console.log(article);
   const toSet = JSON.parse(article.article);
+  console.log(toSet);
   setupPage(toSet)
 });
 
@@ -42,10 +42,9 @@ function setupPage(article){
   for (var i in article["related articles"]){
     const page = article["related articles"][i];
     console.log(page);
-    var newElement = document.createElement("div");
+    var newElement = document.createElement("li");
     newElement.className = "relatedArticle"
-    newElement.id = counter
-    newElement.innerHTML = getArticleHTML(page);
+    newElement.innerHTML = getArticleHTML(page, i);
     counter += 1
     relatedArticles.appendChild(newElement);
     console.log(newElement);
@@ -54,6 +53,7 @@ function setupPage(article){
     const page = article["related articles"][i];
     let newElement = document.getElementById(i);
     newElement.addEventListener("click", (event) => {
+      console.log([event.srcElement.id])
       chrome.runtime.sendMessage({
         type: "redirect",
         redirect: article["related articles"][event.srcElement.id].url,
@@ -63,7 +63,7 @@ function setupPage(article){
   }
 
 
-  function getArticleHTML(page){
-    console.log(page);
-    return '<h2 class="articleTitle">'+ page.title + '</h2>' + '<h3>'+page.authors[0]+'</h3>'+'<div>' + page.value + '</div>';
+  function getArticleHTML(page, index){
+    console.log(index);
+    return '<div class="articleContainer" id='+index+'> <div class="titleContainer"><h2 class="articleTitle">'+ page.title + '</h2>' + '<h3>'+page.authors[0]+'</h3>'+'</div> <div class="score">' + page.value + '</div> </div>';
   }

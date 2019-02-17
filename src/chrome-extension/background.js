@@ -11,26 +11,29 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    chrome.storage.local.get(["current_url"], function(result) {
+    if(message.type === "load"){
+      chrome.storage.local.get(["current_url"], function(result) {
 
-      if(result.current_url == sender.tab.url) {
-        return;
-      } else {
+        if(result.current_url == sender.tab.url) {
+          return;
+        } else {
 
-        chrome.storage.local.set({"current_url": sender.tab.url}, function() {
+          chrome.storage.local.set({"current_url": sender.tab.url}, function() {
 
-          var requestUrl = "http://52.52.89.74/url"
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', requestUrl, true);
-          xhr.setRequestHeader("Content-Type", "application/json");
-          xhr.onload = function(){
-            sendResponse(this.response);
-          };
-          xhr.send(JSON.stringify({url: sender.tab.url}));
-        });
-      }
-    });
-    return true;
+            var requestUrl = "http://52.52.89.74/url"
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', requestUrl, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = function(){
+              console.log(this.response);
+              sendResponse(this.response);
+            };
+            xhr.send(JSON.stringify({url: sender.tab.url}));
+          });
+        }
+      });
+      return true;
+    }
 
   });
 });

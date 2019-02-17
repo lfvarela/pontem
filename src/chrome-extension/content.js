@@ -6,7 +6,9 @@
 
 console.log("content!")
 
-chrome.runtime.sendMessage({}, (response) => {
+chrome.runtime.sendMessage({
+  type: "load",
+}, (response) => {
     console.log('Calling the response');
     console.log(response);
     chrome.storage.local.set({
@@ -14,14 +16,13 @@ chrome.runtime.sendMessage({}, (response) => {
     }, () => {
       console.log('Set local storage');
     });
-    // chrome.runtime.sendMessage({
-    //   type: "updateData",
-    //   payload: response,
-    // });
 });
 
+
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  console.log('RECIEVING MESSAGE');
   if(message.type === "redirect"){
+    console.log('HANDLING MESSAGE');
     location.replace("http://"+message.redirect)
   }
 });
