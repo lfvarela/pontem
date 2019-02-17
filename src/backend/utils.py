@@ -15,6 +15,12 @@ def is_same_url(url1,url2):
     return True
 
 def get_entities(text):
+    """
+    This method uses the spacy named entity recognition module to extract named entities from the given text.
+    We manually remove proper nouns that we aren't interested in.
+
+    We see which proper nouns have occurred the most and then we return the top 3 named entities.
+    """
     nlp = spacy.load('en_core_web_sm')
     doc = nlp(text)
 
@@ -39,19 +45,16 @@ def find_ideal_recommendations(sentiment_tuples, our_sentiment):
 
     sentiment_tuples.sort(key=lambda x: x[1], reverse=False) # ordered list of tuples from smallest to biggest
 
-    most_positive = sentiment_tuples[:-1][1]
-    mp_idx = len(sentiment_tuples) - 1
-
+    most_positive = sentiment_tuples[-1][1]
     most_negative = sentiment_tuples[0][1]
-    mn_idx = 0
 
     if our_sentiment < most_positive and our_sentiment > most_negative:
         return [sentiment_tuples[0], sentiment_tuples[-1]]
-    else if our_sentiment <= most_negative:
+    elif our_sentiment <= most_negative:
         return [sentiment_tuples[-1], sentiment_tuples[len(sentiment_tuples/2)]]
-    else if our_sentiment >= most_positive:
+    elif our_sentiment >= most_positive:
         return [sentiment_tuples[0], sentiment_tuples[len(sentiment_tuples/2)]]
-    else 
+    else:
         return sentiment_tuples
 
 

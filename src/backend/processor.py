@@ -3,7 +3,7 @@ from textblob import TextBlob
 from newspaper import Article
 from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
-from .utils import *
+from .utils import find_ideal_recommendations, is_same_url, get_entities
 from .threading_helper import process_threaded
 
 class Processor():
@@ -15,12 +15,8 @@ class Processor():
     def _process_article(self):
         self.article.download()
         self.article.parse()
-        authors = self.article.authors
-        # TODO: decide if we need nlp...
         self.article.nlp()
-        keywords = self.article.keywords
 
-        return authors, keywords
 
     def _fetch_related_articles(self):
         """
@@ -28,7 +24,8 @@ class Processor():
         :return: list<str>, list of related urls
         """
         related_article_urls = []
-        keywords = self.article.keywords
+        keywords = self.article.keywords + get_entities(self.article.text)
+        print(keywords)
         rss_url = "https://news.google.com/news/rss/search?q="
 
         # constructs the rss search query from the keywords
@@ -82,8 +79,7 @@ class Processor():
         Given a list of (article, sentiment) tuples, return a list of dicts, where each dict corresponds
         to information for article we recommend. Assumes articles have been downloaded and parsed
         """
-        recommendations = sentiment_tuples[:2] # TODO: implement actual algorithm to get recommendations...
-
+        recommendations = find_ideal_recommendations(sentiment_tuples, our_sentiment)
         return [ self._make_recommendation_obj(article, sentiment) for article, sentiment in recommendations ]
 
 
@@ -102,7 +98,6 @@ class Processor():
             return idx, None
 
 
-    # TODO: implement multithread
     def get_recommendations(self):
         """
         API function call. Get info about our article and a list of recommended articles.
@@ -126,8 +121,4 @@ class Processor():
             }
 
 
-if __name__ == '__main__':
-    article_processor = Processor(
-        "https://www.rappler.com/nation/223466-maria-ressa-posts-bail-cyber-libel-february-14-2019?utm_source=facebook&utm_medium=social&utm_campaign=nation&fbclid=IwAR0GIdAzgUn5J0SBSKZlllP-dwlw2eeCSzEAO4QF2qS8bxTic1zpIF4_47c")
-    article_processor.get_recommendations()
 
