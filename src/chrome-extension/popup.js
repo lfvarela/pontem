@@ -18,6 +18,8 @@ let currentArticleAuthors = document.getElementById("currentArticleAuthors");
 
 let relatedArticles = document.getElementById("relatedArticles");
 
+let currentScore = document.getElementById("currentScore")
+
 chrome.storage.local.get("article", (article) => {
   console.log('The article is');
   const toSet = JSON.parse(article.article);
@@ -36,6 +38,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 function setupPage(article){
   currentArticleTitle.innerHTML = article.title;
   currentArticleAuthors.innerHTML = article.authors[0];
+  currentScore.innerHTML = Math.round(100*article.sentiment);
 
   var counter = 0
   let firstElement = document.createElement("div");
