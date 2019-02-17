@@ -18,7 +18,6 @@ class Processor():
         self.article.parse()
         self.article.nlp()
 
-
     def _fetch_related_articles(self):
         """
         Use the keywords and any other info from the article to return related
