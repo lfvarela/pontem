@@ -11,33 +11,29 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if(message.type === "load"){
+      chrome.storage.local.get(["current_url"], function(result) {
 
-    chrome.storage.local.get(["current_url"], function(result) {
+        if(result.current_url == sender.tab.url) {
+          return;
+        } else {
 
-      if(result.current_url == sender.tab.url) {
-        console.log("redundant");
-        return;
-      } else {
-        // console.log("ready");
-        // console.log(sender.tab.url);
+          chrome.storage.local.set({"current_url": sender.tab.url}, function() {
 
-        chrome.storage.local.set({"current_url": sender.tab.url}, function() {
-          console.log("processing url");
-
-          var requestUrl = "http://52.52.89.74/url"
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', requestUrl, true);
-          xhr.setRequestHeader("Content-Type", "application/json");
-          xhr.onload = function(){
-            console.log('getFinalUrl', xhr.responseURL);
-          };
-          xhr.send(JSON.stringify({url: sender.tab.url}));
-        });
-      }
-    });
-    
-    
-    
-  
+            var requestUrl = "http://52.52.89.74:5000/url"
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', requestUrl, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = function(){
+              console.log('in the onload');
+              console.log(this.response);
+              sendResponse(this.response);
+            };
+            xhr.send(JSON.stringify({url: sender.tab.url}));
+          });
+        }
+      });
+    }
+    return true;
   });
 });
