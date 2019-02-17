@@ -133,7 +133,7 @@ class Processor():
                 'authors':  self.article.authors if self.article.authors else [''],
                 'sentiment': our_sentiment,
                 'url': self.article.url,
-                'source': urlparse(self.article.url),
+                'source': urlparse(self.article.url).netloc,
                 'recommendations': recommendations
             }
 
