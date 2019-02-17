@@ -1,16 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style>
-      button {
-        height: 30px;
-        width: 30px;
-        outline: none;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <button id="changeColor"></button>
+    <div class="container">
+      <div class="titleContainer">
+        <h1>Pontem</h1>
+        <h2>See things from </br>
+          another perspective.</h2>
+      </div>
+      <div class="currentLabel">
+      CURRENT ARTICLE
+      </div>
+      <div class="articleContainer">
+        <div>
+          <h2 id="currentArticleTitle"></h2>
+          <h3 id="currentArticleAuthors"></h3>
+        </div>
+        <div id="currentScore" class="score">
+        </div>
+      </div>
+      <div id="currentArticleAuthors">
+
+      </div>
+      <h1>
+        Related Articles:
+      </h1>
+      <ul id="relatedArticles" class="relatedArticles">
+
+      </ul>
+    </div>
     <script src="popup.js"></script>
   </body>
 </html>
