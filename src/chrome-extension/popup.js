@@ -115,7 +115,7 @@ function getElement(event){
 
 function getArticleHTML(page, index){
   console.log(index);
-  return '<div class="articleContainer" id='+index+'> <div class="titleContainer"><h2 class="articleTitle">'+ page.title + '</h2>' + '<h3>'+page.authors[0]+'</h3>'+'</div> <div class="score">' + Math.round((100*page.sentiment)/100) + '</div> </div>';
+  return '<div class="articleContainer" id='+index+'> <div class="titleContainer"><h2 class="articleTitle">'+ page.title + '</h2>' + '<h3>'+page.authors[0]+'</h3>'+'</div> <div class="score">' + Math.round((100*page.sentiment)/10) + '</div> </div>';
 }
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
