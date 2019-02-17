@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
 from .utils import find_ideal_recommendations, is_same_url
 from .threading_helper import process_threaded
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 import re
 
 class Processor():

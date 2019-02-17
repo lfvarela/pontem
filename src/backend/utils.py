@@ -1,6 +1,4 @@
 from urllib.parse import urlparse
-# import spacy
-import re
 
 def is_same_url(url1,url2):
     parse1 = urlparse(url1)
@@ -15,6 +13,7 @@ def is_same_url(url1,url2):
     return True
 
 def get_keywords(title, text):
+    pass
 
 # def get_entities(text):
 #     """
