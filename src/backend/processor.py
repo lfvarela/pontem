@@ -32,6 +32,7 @@ class Processor():
         title_vector = stripped_title.split()
 
         keywords = [word.lower() for word in title_vector if word.lower() not in ['a', 'the', 'of', 'because']]
+        print(keywords)
         rss_url = "https://news.google.com/news/rss/search?q="
 
         # constructs the rss search query from the keywords
