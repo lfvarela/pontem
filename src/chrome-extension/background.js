@@ -11,15 +11,12 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-
     chrome.storage.local.get(["current_url"], function(result) {
 
       if(result.current_url == sender.tab.url) {
         console.log("redundant");
         return;
       } else {
-        // console.log("ready");
-        // console.log(sender.tab.url);
 
         chrome.storage.local.set({"current_url": sender.tab.url}, function() {
           console.log("processing url");
@@ -30,14 +27,15 @@ chrome.runtime.onInstalled.addListener(function() {
           xhr.setRequestHeader("Content-Type", "application/json");
           xhr.onload = function(){
             console.log('getFinalUrl', xhr.responseURL);
+            sendResponse(this.response);
           };
           xhr.send(JSON.stringify({url: sender.tab.url}));
         });
       }
     });
-    
-    
-    
-  
+
+
+    return true;
+
   });
 });

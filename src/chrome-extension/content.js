@@ -6,6 +6,16 @@
 
 console.log("content!")
 
-chrome.runtime.sendMessage({}, function(response) {
-    return true;
+chrome.runtime.sendMessage({}, (response) => {
+    console.log('Calling the response');
+    console.log(response);
+    chrome.storage.local.set({
+      "article": response,
+    }, () => {
+      console.log('Set local storage');
+    });
+    // chrome.runtime.sendMessage({
+    //   type: "updateData",
+    //   payload: response,
+    // });
 });
