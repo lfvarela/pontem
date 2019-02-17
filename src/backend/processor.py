@@ -1,5 +1,6 @@
 
 from textblob import TextBlob
+from urllib.parse import urlparse
 from newspaper import Article
 from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
@@ -132,6 +133,7 @@ class Processor():
                 'authors':  self.article.authors if self.article.authors else [''],
                 'sentiment': our_sentiment,
                 'url': self.article.url,
+                'source': urlparse(self.article.url),
                 'recommendations': recommendations
             }
 
