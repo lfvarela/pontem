@@ -23,7 +23,9 @@ def create_app():
             pprint(result)
             return jsonify(result)
         except Exception as e:
-            return jsonify({ 'ok': False, 'error_msg': str(e) })
+            error_dict = { 'ok': False, 'error_msg': str(e) }
+            print(error_dict)
+            return jsonify(error_dict)
 
 
     def pprint(d):
