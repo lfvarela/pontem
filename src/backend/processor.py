@@ -6,6 +6,7 @@ from urllib.request import urlopen
 from .utils import find_ideal_recommendations, is_same_url
 from .threading_helper import process_threaded
 from datetime import datetime, date, timedelta
+import re
 
 class Processor():
     def __init__(self, url):
@@ -16,7 +17,7 @@ class Processor():
     def _process_article(self):
         self.article.download()
         self.article.parse()
-        self.article.nlp()
+        # self.article.nlp()  # uncomment if we need article.keywords
 
 
     def _fetch_related_articles(self):
@@ -25,8 +26,12 @@ class Processor():
         :return: list<str>, list of related urls
         """
         related_article_urls = []
-        keywords = self.article.keywords
-        print(keywords)
+        title_sentence = self.article.title
+        stripped_title = re.sub('[^a-zA-Z0-9 ]','',title_sentence)
+
+        title_vector = stripped_title.split()
+
+        keywords = [word.lower() for word in title_vector if word.lower() not in ['a', 'the', 'of', 'because']]
         rss_url = "https://news.google.com/news/rss/search?q="
 
         # constructs the rss search query from the keywords
@@ -57,8 +62,6 @@ class Processor():
                             page_obj.link.text)):  # if the article is the same, it should not be in the related list
                 continue
             related_article_urls.append((page_obj.title.text, page_obj.link.text))
-
-            print(page_obj.pubDate.text)
 
         assert(len(related_article_urls) <= 10)
         return related_article_urls
