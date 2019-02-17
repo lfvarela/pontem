@@ -19,3 +19,9 @@ chrome.runtime.sendMessage({}, (response) => {
     //   payload: response,
     // });
 });
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  if(message.type === "redirect"){
+    location.replace("http://"+message.redirect)
+  }
+});

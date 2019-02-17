@@ -53,10 +53,11 @@ function setupPage(article){
   for (var i in article["related articles"]){
     const page = article["related articles"][i];
     let newElement = document.getElementById(i);
-    newElement.addEventListener("click", (page) => {
+    newElement.addEventListener("click", (event) => {
       chrome.runtime.sendMessage({
         type: "redirect",
-        redirect: page.url});
+        redirect: article["related articles"][event.srcElement.id].url,
+      });
       });
     }
   }
@@ -64,5 +65,5 @@ function setupPage(article){
 
   function getArticleHTML(page){
     console.log(page);
-    return '<h2>'+ page.title + '</h2>';
+    return '<h2 class="articleTitle">'+ page.title + '</h2>' + '<h3>'+page.authors[0]+'</h3>'+'<div>' + page.value + '</div>';
   }
