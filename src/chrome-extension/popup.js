@@ -14,22 +14,55 @@
 
 let currentArticleTitle = document.getElementById("currentArticleTitle");
 
+let currentArticleAuthors = document.getElementById("currentArticleAuthors");
 
-let testButton = document.getElementById("testButton");
-testButton.onclick = (element) => {
-  console.log("clicked test button");
-}
+let relatedArticles = document.getElementById("relatedArticles");
 
 chrome.storage.local.get("article", (article) => {
   console.log('The article is');
   console.log(article);
   const toSet = JSON.parse(article.article);
-  currentArticleTitle.innerHTML = toSet.title;
+  setupPage(toSet)
 });
 
 chrome.storage.onChanged.addListener((changes, namespace) => {
-   if(changes["article"]){
-     const article = changes["article"];
-     console.log(article);
-   }
+  if(changes["article"]){
+    const article = changes["article"];
+    console.log(article);
+  }
 });
+
+
+function setupPage(article){
+  currentArticleTitle.innerHTML = article.title;
+  currentArticleAuthors.innerHTML = article.authors[0];
+
+  var counter = 0
+  let firstElement = document.createElement("div");
+  for (var i in article["related articles"]){
+    const page = article["related articles"][i];
+    console.log(page);
+    var newElement = document.createElement("div");
+    newElement.className = "relatedArticle"
+    newElement.id = counter
+    newElement.innerHTML = getArticleHTML(page);
+    counter += 1
+    relatedArticles.appendChild(newElement);
+    console.log(newElement);
+  }
+  for (var i in article["related articles"]){
+    const page = article["related articles"][i];
+    let newElement = document.getElementById(i);
+    newElement.addEventListener("click", (page) => {
+      chrome.runtime.sendMessage({
+        type: "redirect",
+        redirect: page.url});
+      });
+    }
+  }
+
+
+  function getArticleHTML(page){
+    console.log(page);
+    return '<h2>'+ page.title + '</h2>';
+  }

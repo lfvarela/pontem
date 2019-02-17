@@ -38,4 +38,9 @@ chrome.runtime.onInstalled.addListener(function() {
     return true;
 
   });
+    chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+      if(message.type === "redirect"){
+        chrome.tabs.update(sender.tab.id, {url: message.redirect});
+      }
+    });
 });
