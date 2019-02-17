@@ -23,10 +23,11 @@
   text-align: center;
 }
 
-/* .content {
+.content {
   display: flex;
   align-items: center;
-} */
+  flex-direction: column;
+}
 
 .articleContainer {
   display: flex;
@@ -62,6 +63,7 @@
 }
 
 .loader {
+  margin-top: 30%;
   border: 16px solid #f3f3f3; /* Light grey */
   border-top: 16px solid #3498db; /* Blue */
   border-radius: 50%;
