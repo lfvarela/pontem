@@ -3,8 +3,8 @@ from textblob import TextBlob
 from newspaper import Article
 from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
-from utils import find_ideal_recommendations, is_same_url
-from threading_helper import process_threaded
+from .utils import find_ideal_recommendations, is_same_url
+from .threading_helper import process_threaded
 from datetime import datetime, date, timedelta
 
 class Processor():
@@ -25,6 +25,7 @@ class Processor():
         :return: list<str>, list of related urls
         """
         related_article_urls = []
+        keywords = self.article.keywords
         print(keywords)
         rss_url = "https://news.google.com/news/rss/search?q="
 
