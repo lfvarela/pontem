@@ -9,28 +9,32 @@
         <h2>See things from </br>
             another perspective.</h2>
       </div>
-    <div class="loader" id="loader"></div>
-    <div class="container" id="loaded">
-      <div class="currentLabel">
-      CURRENT ARTICLE
-      </div>
-      <div class="articleContainer">
-        <div>
-          <h2 id="currentArticleTitle"></h2>
-          <h3 id="currentArticleAuthors"></h3>
+    <div class="content">
+      <div class="loader" id="loader"></div>
+      <h2 id="error">No Articles or Recommendations Found</h2>
+      <div class="container" id="loaded">
+        <div class="currentLabel">
+        CURRENT ARTICLE
         </div>
-        <div id="currentScore" class="score">
+        <div class="articleContainer">
+          <div>
+            <h2 id="currentArticleTitle"></h2>
+            <h3 id="currentArticleAuthors"></h3>
+          </div>
+          <div id="currentScore" class="score">
+          </div>
         </div>
-      </div>
-      <div id="currentArticleAuthors">
+        <div id="currentArticleAuthors">
 
-      </div>
-      <h1>
-        Related Articles:
-      </h1>
-      <ul id="relatedArticles" class="relatedArticles">
+        </div>
+        <h1>
+          Related Articles:
+        </h1>
+        <ul id="relatedArticles" class="relatedArticles">
 
-      </ul>
+        </ul>
+        <h3>The numbers above are the sentiment scores attached to the article. It is on a scale from -10 to 10.</h3>
+      </div>
     </div>
     <script src="popup.js"></script>
   </body>

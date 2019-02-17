@@ -23,6 +23,11 @@
   text-align: center;
 }
 
+/* .content {
+  display: flex;
+  align-items: center;
+} */
+
 .articleContainer {
   display: flex;
   align-items: center;

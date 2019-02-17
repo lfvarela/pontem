@@ -12,6 +12,8 @@
 //   }
 // });
 
+document.getElementById("error").style.display = "none"
+
 let currentArticleTitle = document.getElementById("currentArticleTitle");
 
 let currentArticleAuthors = document.getElementById("currentArticleAuthors");
@@ -26,10 +28,14 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
   xhr.open('POST', requestUrl, true);
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.onload = function(){
-    console.log(this.response);
-    document.getElementById("loaded").style.visibility = "visible";
+    console.log(JSON.parse(this.response));
     document.getElementById("loader").style.display = "none";
-    setupPage(JSON.parse(this.response));
+    if(!JSON.parse(this.response).ok) {
+      document.getElementById("error").style.display = "block";
+    } else {
+      document.getElementById("loaded").style.visibility = "visible";
+      setupPage(JSON.parse(this.response));
+    }
   };
   xhr.send(JSON.stringify({url: tabs[0].url}));
   // chrome.tabs.sendMessage(tabs[0].id, {
@@ -109,7 +115,7 @@ function getElement(event){
 
 function getArticleHTML(page, index){
   console.log(index);
-  return '<div class="articleContainer" id='+index+'> <div class="titleContainer"><h2 class="articleTitle">'+ page.title + '</h2>' + '<h3>'+page.authors[0]+'</h3>'+'</div> <div class="score">' + Math.round(100*page.sentiment) + '</div> </div>';
+  return '<div class="articleContainer" id='+index+'> <div class="titleContainer"><h2 class="articleTitle">'+ page.title + '</h2>' + '<h3>'+page.authors[0]+'</h3>'+'</div> <div class="score">' + Math.round((100*page.sentiment)/100) + '</div> </div>';
 }
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
