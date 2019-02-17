@@ -88,6 +88,9 @@ class Processor():
 
 
     def _process_one_article(self, idx, url):
+        """
+        Function for multi threaded call. Processes info needed for the articles.
+        """
         # Just in case we exceed rate limit! TODO: start caching if we deploy
         try:
             article = Article(url)
