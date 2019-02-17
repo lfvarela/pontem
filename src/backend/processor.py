@@ -82,7 +82,7 @@ class Processor():
         return \
             {
                 'title': article.title,
-                'authors': article.authors,
+                'authors': article.authors if article.authors else [""],
                 'sentiment': sentiment,
                 'url': article.url
             }
