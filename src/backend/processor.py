@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
 from .utils import find_ideal_recommendations, is_same_url
 from .threading_helper import process_threaded
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 import re
 
 class Processor():
@@ -82,7 +82,7 @@ class Processor():
         return \
             {
                 'title': article.title,
-                'authors': article.authors,
+                'authors': article.authors if article.authors else [""],
                 'sentiment': sentiment,
                 'url': article.url
             }
@@ -127,10 +127,9 @@ class Processor():
             {
                 'ok': True,
                 'title': self.article.title,
-                'authors': self.article.authors,
+                'authors':  self.article.authors if self.article.authors else [''],
                 'sentiment': our_sentiment,
                 'url': self.article.url,
                 'recommendations': recommendations
             }
-
 
