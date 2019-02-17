@@ -24,7 +24,7 @@ def create_app():
             return jsonify(result)
         except Exception as e:
             error_dict = { 'ok': False, 'error_msg': str(e) }
-            print(error_dict
+            print(error_dict)
             return jsonify(error_dict)
 
 
