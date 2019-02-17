@@ -3,8 +3,9 @@ from textblob import TextBlob
 from newspaper import Article
 from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
-from .utils import find_ideal_recommendations, is_same_url, get_entities
-from .threading_helper import process_threaded
+from utils import find_ideal_recommendations, is_same_url
+from threading_helper import process_threaded
+from datetime import datetime, date, timedelta
 
 class Processor():
     def __init__(self, url):
@@ -24,7 +25,6 @@ class Processor():
         :return: list<str>, list of related urls
         """
         related_article_urls = []
-        keywords = self.article.keywords + get_entities(self.article.text)
         print(keywords)
         rss_url = "https://news.google.com/news/rss/search?q="
 
@@ -43,12 +43,21 @@ class Processor():
 
         # appends the title and url of top articles to related_articles
         for i, page_obj in enumerate(pages_list):
+            if len(related_article_urls) == 10:
+                break
+
+            now_datetime = datetime.now() #should be the date that original article is published
+            obj_datetime = datetime.strptime(page_obj.pubDate.text, '%a, %d %b %Y %X %Z')
+            expiry = timedelta(days=7)
+
+            if obj_datetime.date() + expiry < now_datetime.date(): #if the article is more than 7 days old, should be a +- 7 day window
+                continue
             if (is_same_url(self.article.url,
                             page_obj.link.text)):  # if the article is the same, it should not be in the related list
                 continue
-            if len(related_article_urls) == 10:
-                break
             related_article_urls.append((page_obj.title.text, page_obj.link.text))
+
+            print(page_obj.pubDate.text)
 
         assert(len(related_article_urls) <= 10)
         return related_article_urls
@@ -119,6 +128,5 @@ class Processor():
                 'url': self.article.url,
                 'recommendations': recommendations
             }
-
 
 

@@ -1,5 +1,5 @@
 from urllib.parse import urlparse
-import spacy
+# import spacy
 import re
 
 def is_same_url(url1,url2):
@@ -14,29 +14,29 @@ def is_same_url(url1,url2):
 
     return True
 
-def get_entities(text):
-    """
-    This method uses the spacy named entity recognition module to extract named entities from the given text.
-    We manually remove proper nouns that we aren't interested in.
+# def get_entities(text):
+#     """
+#     This method uses the spacy named entity recognition module to extract named entities from the given text.
+#     We manually remove proper nouns that we aren't interested in.
 
-    We see which proper nouns have occurred the most and then we return the top 3 named entities.
-    """
-    nlp = spacy.load('en_core_web_sm')
-    doc = nlp(text)
+#     We see which proper nouns have occurred the most and then we return the top 3 named entities.
+#     """
+#     nlp = spacy.load('en_core_web_sm')
+#     doc = nlp(text)
 
-    ent_counts = {}
+#     ent_counts = {}
 
-    for ent in doc.ents:
-        if ent.label_ in ["ORDINAL","CARDINAL","DATE","TIME","QUANTITY","PERCENT"]:
-            continue
-        formatted = re.sub('\n',' ',ent.text)
-        formatted = re.sub('[^a-zA-Z0-9 ]','',formatted)
-        if formatted not in ent_counts:
-            ent_counts[formatted] = 1
-        else:
-            ent_counts[formatted] += 1
+#     for ent in doc.ents:
+#         if ent.label_ in ["ORDINAL","CARDINAL","DATE","TIME","QUANTITY","PERCENT"]:
+#             continue
+#         formatted = re.sub('\n',' ',ent.text)
+#         formatted = re.sub('[^a-zA-Z0-9 ]','',formatted)
+#         if formatted not in ent_counts:
+#             ent_counts[formatted] = 1
+#         else:
+#             ent_counts[formatted] += 1
 
-    return sorted(ent_counts.keys(),key=lambda x: ent_counts[x],reverse=True)[:3]
+#     return sorted(ent_counts.keys(),key=lambda x: ent_counts[x],reverse=True)[:3]
 
 def find_ideal_recommendations(sentiment_tuples, our_sentiment):
 
