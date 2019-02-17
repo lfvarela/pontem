@@ -52,11 +52,11 @@ class Processor():
             if len(related_article_urls) == 10:
                 break
 
-            now_datetime = datetime.now() #should be the date that original article is published
+            original_datetime = self.article.publish_date # the date that original article is published
             obj_datetime = datetime.strptime(page_obj.pubDate.text, '%a, %d %b %Y %X %Z')
             expiry = timedelta(days=7)
 
-            if obj_datetime.date() + expiry < now_datetime.date(): #if the article is more than 7 days old, should be a +- 7 day window
+            if abs(obj_datetime.date() - original_datetime.date()) < expiry: #if the article is within a +- 7 day window
                 continue
             if (is_same_url(self.article.url,
                             page_obj.link.text)):  # if the article is the same, it should not be in the related list
