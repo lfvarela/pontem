@@ -87,6 +87,7 @@ class Processor():
                 'title': article.title,
                 'authors': article.authors if article.authors else [""],
                 'sentiment': sentiment,
+                'source': urlparse(self.article.url).netloc,
                 'url': article.url
             }
 

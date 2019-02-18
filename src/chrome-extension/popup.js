@@ -16,7 +16,7 @@ document.getElementById("error").style.display = "none"
 
 let currentArticleTitle = document.getElementById("currentArticleTitle");
 
-let currentArticleAuthors = document.getElementById("currentArticleAuthors");
+let currentArticleAuthor = document.getElementById("currentArticleAuthor");
 
 let relatedArticles = document.getElementById("relatedArticles");
 
@@ -62,7 +62,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
 
 function setupPage(article){
   currentArticleTitle.innerHTML = article.title;
-  currentArticleAuthors.innerHTML = article.authors[0];
+  currentArticleAuthor.innerHTML = article.authors[0];
   currentScore.innerHTML = Math.round(article.sentiment);
 
   var counter = 0
@@ -115,11 +115,11 @@ function getElement(event){
 
 function getArticleHTML(page, index){
   console.log(index);
-  return '<div class="articleContainer" id='+index+'> <div class="titleContainer"><h2 class="articleTitle">'+ page.title + '</h2>' + '<h3>'+page.authors[0]+'</h3>'+'</div> <div class="score">' + Math.round((100*page.sentiment)/10) + '</div> </div>';
+  return '<div class="articleContainer" id='+index+'> <div class="titleContainer"><h2 class="articleTitle">'+ page.title + '</h2>' + '<h3>' + page.authors[0] + '</h3>' + '<h3>' + page.source + '</h3>' + '</div> <div class="score">' + Math.round((100*page.sentiment)/10) + '</div> </div>';
 }
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-  console.log('RECIEVING MESSAGE');
+  console.log('RECEIVING MESSAGE');
   if(message.type === "redirect"){
     console.log('HANDLING MESSAGE');
     location.replace(message.redirect)
