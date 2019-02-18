@@ -30,11 +30,12 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
   xhr.onload = function(){
     console.log(JSON.parse(this.response));
     document.getElementById("loader").style.display = "none";
-    if(!JSON.parse(this.response).ok) {
+    var parsed_response = JSON.parse(this.response)
+    if(!parsed_response.ok || parsed_response.recommendations.length == 0) {
       document.getElementById("error").style.display = "block";
     } else {
       document.getElementById("loaded").style.visibility = "visible";
-      setupPage(JSON.parse(this.response));
+      setupPage(parsed_response);
     }
   };
   xhr.send(JSON.stringify({url: tabs[0].url}));
